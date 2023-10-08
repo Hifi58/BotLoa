@@ -1,6 +1,6 @@
 import { TOKEN } from "./auth.js";
+import { Client, GatewayIntentBits } from "discord.js";
 
-const { Client, GatewayIntentBits } = require("discord.js");
 const PREFIX = "!!";
 const client = new Client({
     intents: [
