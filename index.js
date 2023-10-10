@@ -1,5 +1,12 @@
 import { TOKEN } from "./auth.js";
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, Collection, Events, GatewayIntentBits, Partials } from "discord.js";
+import path  from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const PREFIX = "!!";
 const client = new Client({
@@ -8,7 +15,20 @@ const client = new Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMembers,],
+    partials: [
+        Partials.Message,
+        Partials.GuildMember,
+    ]
 });
+
+client.commands = new Collection();
+const folderPath = path.join(__dirname, "commands");
+const commandFolders = fs.readdirSync(folderPath);
+ 
+for(const folder of commandFolders){
+    const commandPath = path.join(folderPath, folder);
+    const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith(".js"));
+}
 
 client.on("ready", () => {
     client.user.setPresence({
